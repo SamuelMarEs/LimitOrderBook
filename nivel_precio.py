@@ -1,6 +1,6 @@
 """
 Autor: Samuel Márquez Estrada
-Date: 19 nov 2026
+Date: nov 19 2026
 Cola FIFO implementada como lista doblemente enlazada. La idea es ordenar las ordenes por orden de llegada
 """
 from orden import Orden
@@ -14,10 +14,12 @@ class Cola:
         
     def desencolar(self) -> Orden:
         """Desencola el primer nodo de la cola (FIFO)
-        Si la cola esta vacia levanta IndexError
 
         Returns:
             Orden: orden al inicio de la cola desenlazado
+            
+        Raises:
+            IndexError: si la cola está vacía
         """
         if self.head is None:
             raise IndexError("Cola vacía")

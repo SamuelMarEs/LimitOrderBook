@@ -1,6 +1,6 @@
 """
 Autor: Samuel Márquez Estrada
-Date: nov 14 2026
+Date: nov 19 2026
 Class orden para guardar las distintas ofertas de compra y venta para el LOB
 """
 class Orden:
