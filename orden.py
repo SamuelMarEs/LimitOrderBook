@@ -10,3 +10,5 @@ class Orden:
         self.precio = precio
         self.cantidad = cantidad
         self.timestammp = timestamp
+        self.anterior = None
+        self.siguiente = None
