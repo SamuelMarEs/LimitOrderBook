@@ -26,9 +26,13 @@ def main():
     
         LOB.emparejar()             # Empareja en prioridad precio-tiempo
         
+        
+    print("Transacciones:\n")
     for accion in LOB.transacciones:
         print(*accion)
-        
+    print("Estado del libro:\n")
+    print(f"best_bid = {LOB.best_bid}\n")
+    print(f"best_ask = {LOB.best_ask}\n")
 
 if __name__ == '__main__':
     main()
