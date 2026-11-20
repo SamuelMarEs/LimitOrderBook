@@ -22,7 +22,7 @@ class Cola:
         if self.head is None:
             raise IndexError("Cola vacía")
         
-        nodo : Nodo = self.head
+        nodo : Orden = self.head
         self.head = nodo.siguiente
         self.head.anterior = None
         nodo.siguiente = None
