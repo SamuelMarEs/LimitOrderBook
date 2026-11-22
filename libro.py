@@ -53,10 +53,12 @@ class Libro:
             raise IndexError("No se encontró la llave")
             
         orden = self.ofertas[key]
-        self.sacar(orden)
-        self.actualizar_best()
-        return orden.cantidad
-
+        if orden.lado == "venta":
+            self.asks.eliminar(orden)
+        elif orden.lado == "compra":
+            self.bids.eliminar(orden)
+            
+        del self.ofertas[key]
 
     def sacar(self, orden):
         if orden.lado == "venta":
