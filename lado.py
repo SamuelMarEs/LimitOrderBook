@@ -20,7 +20,7 @@ def derecho(i):
 
 class Heap_ordenes:
     def __init__(self):
-        self.datos = []
+        self.datos : list[Orden] = []
         self.tamano = 0
 
     def gana(self, a, b):
@@ -30,8 +30,8 @@ class Heap_ordenes:
     def intercambiar(self, i, j):
         A = self.datos
         A[i], A[j] = A[j], A[i]
-        A[i].key = i
-        A[j].key = j
+        A[i].indice = i
+        A[j].indice = j
 
     def flotar(self, i):
         A = self.datos
@@ -71,17 +71,21 @@ class Heap_ordenes:
             self.datos.append(None)
         i = self.tamano
         self.datos[i] = orden
-        orden.key = i
+        orden.indice = i
         self.tamano += 1
         self.flotar(i)
 
     def extraer(self):
         if self.tamano == 0:
             raise IndexError("heap vacio")
+        cima : Orden = self.cima()
+        while not cima.activa:
+            self.eliminar(self.datos[0])
+            cima = self.cima()
         return self.eliminar(self.datos[0])
 
     def eliminar(self, orden):
-        i = orden.key
+        i = orden.indice
         u = self.tamano - 1
         if i != u:
             self.intercambiar(i, u)
@@ -97,10 +101,10 @@ class Bid_heap(Heap_ordenes):
     def gana(self, a, b):
         if a.precio != b.precio:
             return a.precio > b.precio
-        return a.timestamp < b.precio
+        return a.timestamp < b.timestamp
     
 class Ask_heap(Heap_ordenes):
     def gana(self, a, b):
         if a.precio != b.precio:
             return a.precio < b.precio
-        return a.timestamp < b.precio
+        return a.timestamp < b.timestamp
