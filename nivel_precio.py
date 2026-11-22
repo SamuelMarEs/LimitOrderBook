@@ -26,10 +26,7 @@ class Cola:
             raise IndexError("Cola vacía")
         
         nodo : Orden = self.head
-        self.head = nodo.siguiente
-        self.head.anterior = None
-        nodo.siguiente = None
-        self.activas -= 1
+        self.eliminar(nodo)
         return nodo
     
     def encolar(self, nodo : Orden):
@@ -38,10 +35,12 @@ class Cola:
         Args:
             nodo (Orden): nodo que se va a añadir al final de la cola
         """
-        if self.head is None:
-            self.head = nodo
-            self.tail = nodo
+        nodo.siguiente = None
         nodo.anterior = self.tail
+        if self.tail is None:
+            self.head = nodo
+        else:
+            self.tail.siguiente = nodo
         self.tail = nodo
         self.activas += 1
         
@@ -53,6 +52,11 @@ class Cola:
         """
         if nodo.anterior is not None:
             nodo.anterior.siguiente = nodo.siguiente
+        else:
+            self.head = nodo.siguiente
         if nodo.siguiente is not None:
             nodo.siguiente.anterior = nodo.anterior
+        else:
+            self.tail = nodo.anterior
+        nodo.anterior = nodo.siguiente = None
         self.activas -= 1
