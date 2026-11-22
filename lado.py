@@ -23,12 +23,13 @@ def derecho(i):
 class Nodo_precio:
     def __init__(self, precio : float):
         self.precio = precio
+        self.indice = None
 
 class Heap_ordenes:
     def __init__(self):
         self.datos : list[Nodo_precio] = []
         self.tamano = 0
-        self.niveles : dict[Cola] = {}
+        self.niveles : dict[float, Cola] = {}
 
     def gana(self, a, b):
         raise NotImplementedError
@@ -65,17 +66,11 @@ class Heap_ordenes:
         return self.tamano == 0
 
     def cima(self):
-        if self.tamano == 0:
-            return None
-        cima = self.datos[0]
-        
-        while cima is not None and self.niveles[cima.precio].activas == 0:
+        while self.tamano > 0 and self.niveles[self.datos[0].precio].activas == 0:
             # Si no hay ofertas activas en el precio
             # Elimina el precio
             self.eliminar(0)
-            # Actualiza la cima del heap
-            cima = self.datos[0]
-        return cima 
+        return self.datos[0] if self.tamano > 0 else None 
 
     def mejor_precio(self):
         nodo = self.cima()
@@ -83,59 +78,32 @@ class Heap_ordenes:
 
     def insertar(self, orden : Orden):
         precio = orden.precio
-        if precio in self.niveles:
-            # Si el precio ya está en el heap, no hace falta volverlo a añadir
-            # Añade la oferta al nivel correspondiente
-            self.niveles[precio].encolar(orden)
-        else:
-            if self.tamano == len(self.datos):
-                self.datos.append(None)
-            # Añade el precio al heap
-            i = self.tamano
+        if precio not in self.niveles:
             nodo = Nodo_precio(precio)
-            self.datos[i] = nodo
-            nodo.indice = i
+            nodo.indice = self.tamano
+            self.datos.append(nodo)
             self.tamano += 1
-            self.flotar(i)
-            # Crea un nivel nuevo
+            self.flotar(nodo.indice)
             self.niveles[precio] = Cola()
-            # Añade la oferta al nivel correspondiente
-            self.niveles[precio].encolar(orden)
+        self.niveles[precio].encolar(orden)
 
-    def extraer(self):
-        if self.tamano == 0:
-            raise IndexError("heap vacio")
-        cima : Nodo_precio = self.cima()
-        while self.niveles[cima.precio].activas == 0:
-            # Si no hay ordenes activas en este nivel de precio
-            # Entonces elimina el precio de la cima
-            self.eliminar(0)
-            # Actualiza la cima
-            cima = self.cima()
-        return cima.precio
-    
     def eliminar(self, indice):
-        i = indice
+        precio = self.datos[indice].precio
         u = self.tamano - 1
-        if i != u:
-            self.intercambiar(i, u)
-        self.datos[u].indice = None
-        self.datos[u] = None
+        if indice != u:
+            self.intercambiar(indice, u)
+        self.datos.pop().indice = None
         self.tamano = u
-        if i < self.tamano:
-            self.flotar(i)
-            self.hundir(i)
+        if indice < self.tamano:
+            self.flotar(indice)
+            self.hundir(indice)
+        del self.niveles[precio]
 
 class Bid_heap(Heap_ordenes):
     def gana(self, a, b):
-        if b is not None:
-            return a.precio > b.precio
-        else:
-            return True
+        return a.precio > b.precio
     
 class Ask_heap(Heap_ordenes):
     def gana(self, a, b):
-        if b is not None:
-            return a.precio < b.precio
-        else:
-            return True
+        return a.precio < b.precio
+
