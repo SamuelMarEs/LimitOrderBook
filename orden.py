@@ -9,6 +9,6 @@ class Orden:
         self.lado = lado
         self.precio = precio
         self.cantidad = cantidad
-        self.timestammp = timestamp
+        self.timestamp = timestamp
         self.anterior = None
         self.siguiente = None
