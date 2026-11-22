@@ -1,12 +1,15 @@
 """
 Autor: Emiliano Panuncio Almaraz Gonzalez
 Date: nov 20 2026
+
 Heaps de bids (compras) y asks (ventas) para el Limit Order Book
 
-Prioridad precio-tiempo:
-- Bid_heap: gana el precio MÁS ALTO (max-heap)
-- Ask_heap: gana el precio MÁS BAJO (min-heap)
-- A igual precio, gana la que llegó antes (timestamp menor)
+- Bid_heap: max-heap, la cima es el precio de compra más alto
+- Ask_heap: min-heap, la cima es el precio de venta más bajo
+Cada precio aparece una sola vez en el heap; sus órdenes viven en
+self.niveles[precio], una Cola FIFO que da la prioridad de tiempo
+Los niveles que se quedan sin órdenes activas se eliminan
+cuando llegan a la cima (eliminación perezosa)
 """
 
 from orden import Orden

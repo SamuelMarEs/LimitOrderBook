@@ -35,7 +35,8 @@ def main():
 
         elif orden[1] == "cancelar":
             key =  orden[0]
-            LOB.cancelar(key)       # Cancela la oferta
+            if key in LOB.ofertas:
+                LOB.cancelar(key)       # Cancela la oferta
          
         
         

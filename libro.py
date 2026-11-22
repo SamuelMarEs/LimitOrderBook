@@ -1,8 +1,13 @@
 """
 Autor: Samuel Márquez y Emiliano Panuncio
 Date: nov 19 2026
+
 Class Libro con todo lo que corresponde al LimitOrderBook de una acción
+Guarda las órdenes vivas (por id), un heap por lado y los mejores
+precios. emparejar() cruza órdenes mientras best_bid >= best_ask;
+el precio de cada transacción es el de la orden que ya estaba en el libro
 """
+
 from orden import Orden
 from lado import Ask_heap, Bid_heap
 
@@ -38,11 +43,11 @@ class Libro:
             key (str): ID de la orden que se desea cancelar
 
         Raises:
-            IndexError: si la orden no se encuentra en las ofertas
+            KeyError: si la orden no se encuentra en las ofertas
         """
         
         if key not in self.ofertas:
-            raise IndexError("No se encontró la llave")
+            raise KeyError("No se encontró la llave")
         
         oferta = self.ofertas[key]
         precio = oferta.precio
