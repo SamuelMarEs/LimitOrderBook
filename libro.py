@@ -3,7 +3,6 @@ Autor: Samuel Márquez y Emiliano Panuncio
 Date: nov 19 2026
 Class Libro con todo lo que corresponde al LimitOrderBook de una acción
 """
-from nivel_precio import Cola
 from orden import Orden
 from lado import Ask_heap, Bid_heap
 
