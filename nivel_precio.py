@@ -50,4 +50,4 @@ class Cola:
         """
         nodo.anterior.siguiente = nodo.siguiente
         nodo.siguiente.anterior = nodo.anterior
-        
+        nodo.activa = False
