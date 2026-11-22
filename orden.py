@@ -12,5 +12,3 @@ class Orden:
         self.timestamp = timestamp
         self.anterior = None
         self.siguiente = None
-        self.indice = None
-        self.activa : bool = True
