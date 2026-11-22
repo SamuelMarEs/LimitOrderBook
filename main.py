@@ -24,7 +24,8 @@ def main():
             key =  orden[0]
             LOB.cancelar(key)       # Cancela la oferta
     
-        LOB.emparejar()             # Empareja en prioridad precio-tiempo
+    # Empareja en prioridad precio-tiempo
+    LOB.emparejar()             
         
         
     print("Transacciones:\n")
