@@ -52,7 +52,7 @@ class Libro:
         else:
             self.heap_bids.niveles[precio].eliminar(oferta)
         del self.ofertas[key]
-
+        self.actualizar_best()
     
     def emparejar(self):
         while self.best_bid is not None and self.best_ask is not None and self.best_bid >= self.best_ask:
@@ -70,5 +70,4 @@ class Libro:
                 self.cancelar(bid.key)
             if ask.cantidad == 0:
                 self.cancelar(ask.key)
-
             self.actualizar_best()
