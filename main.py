@@ -1,7 +1,18 @@
 """
 Autor: Samuel Márquez y Emiliano Panuncio
 Date: nov 19 2026
-(Descripción)
+
+Programa principal del Limit Order Book
+
+Entrada:
+    N                                   número de órdenes
+    <id> compra <precio> <cantidad> <timestamp>
+    <id> venta  <precio> <cantidad> <timestamp>
+    <id> cancelar
+Cada compra/venta se empareja al llegar, con prioridad precio-tiempo
+
+Salida: lista de transacciones (bid, ask, precio, cantidad)
+y el estado final del libro (best_bid, best_ask)
 """
 from libro import Libro  
 from orden import Orden  
