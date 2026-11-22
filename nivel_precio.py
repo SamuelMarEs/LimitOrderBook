@@ -1,7 +1,7 @@
 """
 Autor: Samuel Márquez Estrada
 Date: nov 19 2026
-Cola FIFO implementada como lista doblemente enlazada. La idea es ordenar las ordenes por orden de llegada
+Cola FIFO implementada como lista doblemente enlazada. La idea es ordenar las ofertas por orden de llegada dentro del mismo precio
 """
 from orden import Orden
 
@@ -11,6 +11,7 @@ class Cola:
         """
         self.head = None
         self.tail = None
+        self.activas = 0
         
     def desencolar(self) -> Orden:
         """Desencola el primer nodo de la cola (FIFO)
@@ -28,6 +29,7 @@ class Cola:
         self.head = nodo.siguiente
         self.head.anterior = None
         nodo.siguiente = None
+        self.activas -= 1
         return nodo
     
     def encolar(self, nodo : Orden):
@@ -41,6 +43,7 @@ class Cola:
             self.tail = nodo
         nodo.anterior = self.tail
         self.tail = nodo
+        self.activas += 1
         
     def eliminar(self, nodo : Orden):
         """Elimina un nodo conocido
@@ -50,4 +53,4 @@ class Cola:
         """
         nodo.anterior.siguiente = nodo.siguiente
         nodo.siguiente.anterior = nodo.anterior
-        nodo.activa = False
+        self.activas -= 1
