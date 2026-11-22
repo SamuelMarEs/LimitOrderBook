@@ -23,22 +23,16 @@ class Libro:
         self.best_ask = self.heap_asks.mejor_precio()
         
     def new_bid(self, bid : Orden):
-        self.cola_bids.encolar(bid)
         self.ofertas[bid.key] = bid
         self.heap_bids.insertar(bid)
         self.actualizar_best()
-        # Añadir oferta de compra al heap de compras (bids)
-        # Que al hacerlo, se actualice tambien el best_bid al precio de la mejor oferta (cima del heap)
     
     def new_ask(self, ask : Orden):
-        self.asks.encolar(ask)
         self.ofertas[ask.key] = ask
         self.heap_asks.insertar(ask)
         self.actualizar_best()    
-        # Añadir oferta de compra al heap de ventas (asks)
-        # Que al hacerlo, se actualice tambien el best_bid al precio de la mejor oferta (cima del heap)
     
-    def cancelar(self, oferta : Orden):
+    def cancelar(self, key : str):
         """cancela una orden por su ID
 
         Args:
@@ -47,24 +41,19 @@ class Libro:
         Raises:
             IndexError: si la orden no se encuentra en las ofertas
         """
-        key = oferta.key
-        precio = oferta.precio
+        
         if key not in self.ofertas:
             raise IndexError("No se encontró la llave")
+        
+        oferta = self.ofertas[key]
+        precio = oferta.precio
+        
         if oferta.lado == "venta":
             self.heap_asks.niveles[precio].eliminar(oferta)
         else:
             self.heap_bids.niveles[precio].eliminar(oferta)
         del self.ofertas[key]
 
-    def sacar(self, orden):
-        if orden.lado == "venta":
-            self.cola_asks.eliminar(orden)
-            self.heap_asks.extraer(orden)
-        else:
-            self.cola_bids.eliminar(orden)
-            self.heap_bids.extraer(orden)
-        del self.ofertas[orden.key]
     
     def emparejar(self):
         while self.best_bid is not None and self.best_ask is not None and self.best_bid >= self.best_ask:
@@ -79,8 +68,8 @@ class Libro:
             ask.cantidad -= cantidad
 
             if bid.cantidad == 0:
-                self.cancelar(bid)
+                self.cancelar(bid.key)
             if ask.cantidad == 0:
-                self.cancelar(ask)
+                self.cancelar(ask.key)
 
             self.actualizar_best()

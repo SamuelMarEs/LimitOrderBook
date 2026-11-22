@@ -42,7 +42,7 @@ class Heap_ordenes:
 
     def flotar(self, i):
         A = self.datos
-        while i > self.gana(A[i], A[padre(i)]):
+        while i > 0 and self.gana(A[i], A[padre(i)]):
             p = padre(i)
             self.intercambiar(i,p)
             i = p
@@ -68,16 +68,21 @@ class Heap_ordenes:
         if self.tamano == 0:
             return None
         cima = self.datos[0]
-        while not cima.activa:
-            self.eliminar(self.datos[0])
-            cima = self.cima()
+        
+        while cima is not None and self.niveles[cima.precio].activas == 0:
+            # Si no hay ofertas activas en el precio
+            # Elimina el precio
+            self.eliminar(0)
+            # Actualiza la cima del heap
+            cima = self.datos[0]
         return cima 
 
     def mejor_precio(self):
         nodo = self.cima()
         return nodo.precio if nodo else None
 
-    def insertar(self, orden : Orden, precio : float):
+    def insertar(self, orden : Orden):
+        precio = orden.precio
         if precio in self.niveles:
             # Si el precio ya está en el heap, no hace falta volverlo a añadir
             # Añade la oferta al nivel correspondiente
@@ -92,6 +97,8 @@ class Heap_ordenes:
             nodo.indice = i
             self.tamano += 1
             self.flotar(i)
+            # Crea un nivel nuevo
+            self.niveles[precio] = Cola()
             # Añade la oferta al nivel correspondiente
             self.niveles[precio].encolar(orden)
 
@@ -118,12 +125,17 @@ class Heap_ordenes:
         if i < self.tamano:
             self.flotar(i)
             self.hundir(i)
-        return self.datos[i].precio
 
 class Bid_heap(Heap_ordenes):
     def gana(self, a, b):
-        return a.precio > b.precio
+        if b is not None:
+            return a.precio > b.precio
+        else:
+            return True
     
 class Ask_heap(Heap_ordenes):
     def gana(self, a, b):
-        return a.precio < b.precio
+        if b is not None:
+            return a.precio < b.precio
+        else:
+            return True

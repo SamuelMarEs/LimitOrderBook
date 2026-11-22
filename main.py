@@ -23,17 +23,16 @@ def main():
         elif orden[1] == "cancelar":
             key =  orden[0]
             LOB.cancelar(key)       # Cancela la oferta
-    
     # Empareja en prioridad precio-tiempo
     LOB.emparejar()             
         
         
-    print("Transacciones:\n")
+    print("Transacciones:")
     for accion in LOB.transacciones:
         print(*accion)
-    print("Estado del libro:\n")
-    print(f"best_bid = {LOB.best_bid}\n")
-    print(f"best_ask = {LOB.best_ask}\n")
+    print("Estado del libro:")
+    print(f"best_bid = {LOB.best_bid}")
+    print(f"best_ask = {LOB.best_ask}")
 
 if __name__ == '__main__':
     main()

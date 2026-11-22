@@ -51,6 +51,8 @@ class Cola:
         Args:
             nodo (Nodo): nodo que se quiere eliminar
         """
-        nodo.anterior.siguiente = nodo.siguiente
-        nodo.siguiente.anterior = nodo.anterior
+        if nodo.anterior is not None:
+            nodo.anterior.siguiente = nodo.siguiente
+        if nodo.siguiente is not None:
+            nodo.siguiente.anterior = nodo.anterior
         self.activas -= 1
